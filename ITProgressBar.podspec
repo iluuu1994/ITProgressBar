@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.author       = { "Ilija Tovilo" => "support@ilijatovilo.ch" }
   s.platform     = :osx
 
-  s.source       = { :git => "https://github.com/iluuu1994/ITProgressBar.git", :commit => "ac8a28f233a384c4976ea4db2240754073a2bab3" }
+  s.source       = { :git => "https://github.com/iluuu1994/ITProgressBar.git", :tag => '0.0.1' }
 
   s.source_files = "ITProgressBar/Classes/*{h,m}"
 
