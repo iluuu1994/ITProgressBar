@@ -17,6 +17,7 @@
 
 @interface ITProgressBar ()
 @property BOOL it_isHidden;
+@property (strong, nonatomic, readonly) CALayer *rootLayer;
 @property (strong, nonatomic, readonly) CALayer *stripesLayer;
 @property (strong, nonatomic, readonly) CALayer *borderLayer;
 @property (strong, nonatomic, readonly) CAGradientLayer *fillLayer;
@@ -29,6 +30,7 @@
 
 
 @implementation ITProgressBar
+@synthesize rootLayer = _rootLayer;
 @synthesize stripesLayer = _stripesLayer;
 @synthesize borderLayer = _borderLayer;
 @synthesize fillLayer = _fillLayer;
@@ -67,6 +69,7 @@
     _stripesImage = [self stripesImageWithSize:NSMakeSize(30, 20)];
     
     // Enable Core Animation
+    self.layer = self.rootLayer;
     self.wantsLayer = YES;
     
     // Init layers
@@ -82,7 +85,7 @@
     [self.clipLayer addSublayer:self.borderLayer];
     [self.clipLayer addSublayer:self.innerClipLayer];
     
-    [self.layer addSublayer:self.clipLayer];
+    [self.rootLayer addSublayer:self.clipLayer];
     
     // Force update
     [self resizeLayers];
@@ -251,6 +254,13 @@
             self.stripesLayer.opacity = 0.0;
         }
     }
+}
+
+- (CALayer *)rootLayer {
+    if (!_rootLayer) {
+        _rootLayer = [CALayer layer];
+    }
+    return _rootLayer;
 }
 
 - (CALayer *)stripesLayer {
