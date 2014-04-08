@@ -39,7 +39,6 @@
 #define kOpacityAnimationKey @"opacity"
 
 #define kStripesOpacity 0.04
-#define kColorTintLayerOpacity 0.2
 
 
 @interface ITProgressBar ()
@@ -90,10 +89,16 @@
 - (void)setUp {
     // Initial values
     _borderWidth = 1.0;
+    _borderColor = [NSColor colorWithCalibratedRed: 0.291 green: 0.291 blue: 0.291 alpha: 1];
     _shadowWidth = 1.0;
     _floatValue = 1.0;
     _animationDuration = 0.3;
     _stripesImage = [self stripesImageWithSize:NSMakeSize(30, 20)];
+    _colorTintOpacity = 0.2f;
+    _backgroundColors = @[
+                          (id)[NSColor colorWithDeviceWhite:0.55 alpha:1.0].CGColor,
+                          (id)[NSColor colorWithDeviceWhite:0.4 alpha:1.0].CGColor
+                          ];
     
     // Enable Core Animation
     self.layer = self.rootLayer;
@@ -172,7 +177,13 @@
 
 - (void)reloadColorTint {
     self.colorTintLayer.backgroundColor = self.colorTint.CGColor;
+    self.colorTintLayer.opacity = self.colorTintOpacity;
 }
+
+-(void)reloadBackground {
+    self.backgroundLayer.colors = self.backgroundColors;
+}
+
 
 - (void)resizeInnerLayers {
     self.innerClipLayer.frame = NSInsetRect(self.bounds, self.borderWidth, self.borderWidth);
@@ -233,6 +244,17 @@
 - (void)setColorTint:(NSColor *)colorTint {
     _colorTint = colorTint;
     [self reloadColorTint];
+}
+
+- (void)setColorTintOpacity:(CGFloat)colorTintOpacity {
+    _colorTintOpacity = colorTintOpacity;
+    [self reloadColorTint];
+}
+
+- (void)setBackgroundColors:(NSArray *)backgroundColors
+{
+    _backgroundColors = backgroundColors;
+    [self reloadBackground];
 }
 
 - (void)setHidden:(BOOL)flag {
@@ -302,7 +324,7 @@
 - (CALayer *)colorTintLayer {
     if (!_colorTintLayer) {
         _colorTintLayer = [CALayer layer];
-        _colorTintLayer.opacity = kColorTintLayerOpacity;
+        _colorTintLayer.opacity = _colorTintOpacity;
     }
     return _colorTintLayer;
 }
@@ -317,10 +339,7 @@
 - (CAGradientLayer *)backgroundLayer {
     if (!_backgroundLayer) {
         _backgroundLayer = [CAGradientLayer layer];
-        _backgroundLayer.colors = @[
-                                        (id)[NSColor colorWithDeviceWhite:0.55 alpha:1.0].CGColor,
-                                        (id)[NSColor colorWithDeviceWhite:0.4 alpha:1.0].CGColor
-                                    ];
+        _backgroundLayer.colors = self.backgroundColors;
     }
     return _backgroundLayer;
 }
@@ -364,6 +383,11 @@
     
     [self updateLayer];
 }
+- (void)setBorderColor:(NSColor *)borderColor {
+    _borderColor = borderColor;
+    
+    [self updateLayer];
+}
 
 - (void)setShadowWidth:(CGFloat)shadowWidth {
     if (shadowWidth > self.borderWidth) {
@@ -387,7 +411,6 @@
     
     return [NSImage imageWithSize:size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
         //// Color Declarations
-        NSColor* borderColor = [NSColor colorWithCalibratedRed: 0.291 green: 0.291 blue: 0.291 alpha: 1];
         NSColor* innerShadowColor = [NSColor colorWithCalibratedRed: 1 green: 1 blue: 1 alpha: 1];
         
         //// Shadow Declarations
@@ -406,7 +429,7 @@
         if (innerShadowFlag) {
             [innerShadow set];
         }
-        [borderColor setStroke];
+        [self.borderColor setStroke];
         [borderPathPath setLineWidth: self.borderWidth];
         [borderPathPath stroke];
         [NSGraphicsContext restoreGraphicsState];
