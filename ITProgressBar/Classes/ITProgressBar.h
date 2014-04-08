@@ -91,7 +91,8 @@
 @property (strong, nonatomic) NSImage *stripesImage;
 
 /**
- *  The gradient colours used to render the background
+ *  The gradient colors used to render the background,
+ *  as an NSArray of CGColorRef
  */
 @property (strong, nonatomic) NSArray *backgroundColors;
 
