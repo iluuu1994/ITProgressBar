@@ -53,6 +53,11 @@
 @property (strong, nonatomic) NSColor *colorTint;
 
 /**
+ *  Sets the color tint opacity
+ */
+@property (nonatomic) CGFloat colorTintOpacity;
+
+/**
  *  Indicates if the stripes on the progress bar animate.
  *  If this is set to `NO`, the stripes layer will automatically hide.
  */
@@ -70,6 +75,11 @@
 @property (nonatomic) CGFloat borderWidth;
 
 /**
+ *  Sets the color of the border.
+ */
+@property (strong, nonatomic) NSColor *borderColor;
+
+/**
  *  Sets the width of the shadow.
  */
 @property (nonatomic) CGFloat shadowWidth;
@@ -79,5 +89,11 @@
  *  You can use whatever image you want, just make sure it's tilable.
  */
 @property (strong, nonatomic) NSImage *stripesImage;
+
+/**
+ *  The gradient colours used to render the background
+ */
+@property (strong, nonatomic) NSArray *backgroundColors;
+
 
 @end
