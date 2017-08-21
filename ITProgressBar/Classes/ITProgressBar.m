@@ -41,7 +41,7 @@
 #define kStripesOpacity 0.04
 
 
-@interface ITProgressBar ()
+@interface ITProgressBar () <CAAnimationDelegate>
 @property BOOL it_isHidden;
 @property (strong, nonatomic, readonly) CALayer *rootLayer;
 @property (strong, nonatomic, readonly) CALayer *stripesLayer;
